@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Selection Translate",
+    "description": "Select text in a conversation and click the 译 badge at the bottom-right corner of the selection to open a translation card below it. The card shows phonetics, meanings and examples, and can read the original text aloud.",
+    "detail": "README.md"
+  }
+}
