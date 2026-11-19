@@ -1,0 +1,6 @@
+# Bundle patch: the row loads this package's host half and mounts its browser
+# half from the `dsh.client` declaration on the same row (the row name must be
+# the bare package name).
+- insert:
+    - id: selection-translate
+      name: '@local/selection-translate'

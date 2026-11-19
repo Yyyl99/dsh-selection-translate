@@ -1,0 +1,35 @@
+{
+  "name": "@local/selection-translate",
+  "version": "0.1.5",
+  "private": true,
+  "type": "module",
+  "description": "在对话中框选文本，点选区右下角的“译”字即可在下方弹出翻译小窗。弹窗内容显示音标、词义与例句，并且可以朗读原文。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "lib",
+    "locale",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  }
+}
