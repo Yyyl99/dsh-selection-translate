@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const h = React.createElement
 
     const NS = 'selectionTranslate'
-    const BUILD = '0.1.6+2026-11-22a'
+    const BUILD = '0.1.8+2026-11-20b'
     /** Set while this bundle instance owns the document-level hooks. */
     let applied = false
     const LOOKUP_PATH = '/api/selectionTranslate.lookup'

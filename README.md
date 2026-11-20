@@ -40,9 +40,19 @@ dsh plugin add github:Yyyl99/dsh-selection-translate
 - **头部**：查词时显示词头 + 音标（带喇叭），整句时显示 `翻译` 小标题；右侧关闭按钮；
 - **整句**：原文（次要色）→ 细分隔线 → 译文（更大更深）；
 - **单词**：按词性的释义列，每个词性下缩进一条例句，源词在例句里高亮；词典完全没有该词条时，才用一行机翻作为兜底释义；
-- **例句来源**：优先用词典自带的句子，按语义挑与该词性对得上的；仍然缺例句的词性，才请当前窗口使用的模型按词性补一句 —— 对得上就沿用原句，对不上才新写，新写的句子带 `AI` 角标；
+- **例句来源**：优先用词典自带的句子，按语义挑与该词性对得上的；仍然缺例句的词性，才请当前窗口使用的模型按词性补一句 —— 对得上就沿用原句，对不上才新写，新写的句子带 `AI` 角标（**会消耗 token**，见下节）；
 - **代码标识符**（如 `diagKey`，机翻会原样返回，看着像「翻不了」）：拆成单词后翻译，并以词条小卡列出每个部分的释义；
 - **底部**：`自动 / 中文 / English` 方向胶囊，以及引擎名（查词时再带一个 `词典` 标记）。
+
+## token 消耗
+
+查词时，如果词典自带的例句不足以覆盖卡片上显示的每个词性，插件会用**当前窗口正在使用的模型**为缺少例句的词性补写一句英文例句（连同中文意思），这类句子在卡片上带 `AI` 角标。
+
+- **何时会调用模型**：只有「这个词性在词典语料里找不到能对上的句子」时才会调用；语料够用时一次模型请求都不会发；
+- **单次规模**：一次请求里包含词头、卡片上显示的释义、若干条候选例句，约 500–800 个输入 token，输出 100–200 个 token；
+- **缓存**：同一个词 + 同一组释义的结果在内存里保留 1 小时，重复查同一个词不会重复扣费；进程重启后缓存清空；
+- **模型来自哪里**：跟随窗口当前选择的模型（设置里选的 provider/model），不额外配置 key，也不额外计费到别处；
+- **不想要这项功能**：把窗口模型切换成一个不可用的模型，插件会**静默跳过补写**，只显示词典里已有的例句（卡片不会有 `AI` 角标），翻译与朗读不受影响。
 
 ## 朗读
 
@@ -52,6 +62,10 @@ dsh plugin add github:Yyyl99/dsh-selection-translate
 
 翻译发给 Bing（`edge.microsoft.com`），查词发给有道（`dict.youdao.com`，未收录时回退 `dictionaryapi.dev`）。选中的文本不写入磁盘；本地只保存方向选择，以及一小段用于排障的诊断记录（`%TEMP%/dsh-selection-translate.log`，只记时间、阶段、尺寸，不记文本）。
 
+## 许可
+
+MIT 许可证，详见 [LICENSE](LICENSE)。
+
 ---
 
 ## English
@@ -59,6 +73,8 @@ dsh plugin add github:Yyyl99/dsh-selection-translate
 Select text in a conversation and click the 译 badge at the bottom-right corner of the selection to open a translation card below it. The card shows phonetics, meanings and examples (one bilingual example under each part of speech), and can read any English text aloud. Translation is English ↔ Chinese, on demand only.
 
 Corpus first: the dictionary's own sentences are matched to senses by meaning; only senses left without a sentence go to the model the window already runs on, and those sentences carry an `AI` tag.
+
+That fallback costs tokens: one request per word (roughly 500–800 input, 100–200 output tokens) and only when the corpus cannot cover a sense; results are cached in memory for one hour. With no usable window model the step is skipped silently and only corpus sentences are shown.
 
 Text leaves the machine only to reach Bing Translate and Youdao (fallback: dictionaryapi.dev).
 

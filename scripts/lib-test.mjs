@@ -285,8 +285,13 @@ await withFetch((url) => {
     },
   }
   const writer = createExampleWriter({ llm: () => llm, selection: () => ({ provider: 'p', model: 'm' }) })
-  const local = await writer({ headword: 'light', senses: [{ pos: 'n', defs: ['光'] }], candidates: pool }, {})
-  check(local.length === 1 && asked === 0, 'a locally answered entry costs no tokens')
+  const free = await writer({ headword: 'light', senses: [{ pos: 'n', defs: ['光'] }], candidates: pool }, {})
+  check(free.length === 1 && asked === 0, 'a corpus sentence costs no tokens')
+
+  // A sense the corpus cannot carry is the only one sent to the model.
+  asked = 0
+  const partial = await writer({ headword: 'light', senses: [{ pos: 'n', defs: ['光'] }, { pos: 'v', defs: ['照亮'] }], candidates: pool }, {})
+  check(partial.length <= 2 && asked === 1, 'only the sense without a sentence is sent to the model')
 }
 
 if (failures > 0) {
