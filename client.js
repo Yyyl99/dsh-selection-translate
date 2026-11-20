@@ -15,7 +15,7 @@ window.__ModuleLoader__.load({
     const h = React.createElement
 
     const NS = 'selectionTranslate'
-    const BUILD = '0.1.5+2026-11-21b'
+    const BUILD = '0.1.6+2026-11-22a'
     /** Set while this bundle instance owns the document-level hooks. */
     let applied = false
     const LOOKUP_PATH = '/api/selectionTranslate.lookup'
@@ -1642,7 +1642,7 @@ animation:dst-pulse 1.2s ease-in-out infinite}
       const left = clamp(state.dot.x - DOT_SIZE, MARGIN, Math.max(MARGIN, window.innerWidth - width - MARGIN))
       const caretX = clamp(state.dot.x + DOT_SIZE / 2 - left, 16, Math.max(16, width - 30))
       const provider = state.data !== null && typeof state.data.provider === 'string' ? state.data.provider : ''
-      const providerLabel = provider === 'bing' ? 'Bing' : provider === 'google' ? 'Google' : ''
+      const providerLabel = provider === 'bing' ? 'Bing' : ''
 
       return h('div', { className: 'dst-layer', 'data-selection-translate-ui': '' },
         h('section', {

@@ -1,6 +1,6 @@
 {
   "name": "@local/selection-translate",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "type": "module",
   "description": "在对话中框选文本，点选区右下角的“译”字即可在下方弹出翻译小窗。弹窗内容显示音标、词义与例句，并且可以朗读原文。",
